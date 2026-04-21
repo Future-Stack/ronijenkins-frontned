@@ -21,6 +21,8 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+*.env
+*.bat
 config.bat
 temp_auto_push.bat
 temp_interactive_push.bat
