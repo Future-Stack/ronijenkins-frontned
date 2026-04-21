@@ -9,18 +9,27 @@ import {
   ResponsiveContainer 
 } from 'recharts';
 import { BarChart3 } from 'lucide-react';
-import { useGetSystemOverviewQuery } from '../../redux/features/admin/systemOverview';
+import { useGetSubscriptionCardQuery } from '../../redux/features/admin/subscriptionCardApi';
+
 
 const UserEngagementChart: React.FC = () => {
-  const { data: statsData, isLoading } = useGetSystemOverviewQuery(undefined);
+const { data: statsData, isLoading } = useGetSubscriptionCardQuery();
 
-  const engagement = statsData?.engagement;
+console.log(" FULL DATA:", statsData);
 
-  const chartData = Array.from({ length: 7 }).map((_, i) => ({
-    name: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][i],
-    users: Math.floor((engagement?.totalPosts || 0) / 7 + Math.random() * 20),
-    logs: Math.floor((engagement?.totalContent || 0) / 7 + Math.random() * 15),
-  }));
+const engagement = statsData?.engagement || {
+  totalPosts: 0,
+  totalContent: 0,
+  avgContentRating: 0,
+};
+
+const chartData = Array.from({ length: 7 }).map((_, i) => ({
+  name: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][i],
+  users: Math.floor((engagement.totalPosts || 0) / 7 + Math.random() * 20),
+  logs: Math.floor((engagement.totalContent || 0) / 7 + Math.random() * 15),
+}));
+
+ 
 
   if (isLoading) {
     return (

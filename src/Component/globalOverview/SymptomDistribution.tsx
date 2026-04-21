@@ -1,6 +1,7 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
-import { useGetSystemOverviewQuery } from '../../redux/features/admin/systemOverview';
+
+import { useGetSubscriptionCardQuery } from '../../redux/features/admin/subscriptionCardApi';
 
 interface Symptom {
   name: string;
@@ -11,7 +12,7 @@ interface Symptom {
 const COLORS = ['#8b5e83', '#e9bcab', '#423635', '#cfb5c8', '#a3bfa8', '#d4a5a5'];
 
 const SymptomDistribution: React.FC = () => {
-  const { data: statsData, isLoading } = useGetSystemOverviewQuery(undefined);
+  const { data: statsData, isLoading } = useGetSubscriptionCardQuery(undefined);
 
   if (isLoading) {
     return (

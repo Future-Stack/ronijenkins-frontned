@@ -42,6 +42,7 @@ forgetPassword: build.mutation({
 
     verifyEmail: build.mutation({
       query: (data: { code: string; email: string }) => ({
+        url: "",
         method: "POST",
         body: {
           query: `
@@ -49,35 +50,32 @@ forgetPassword: build.mutation({
               verifyEmail(code: $code, email: $email)
             }
           `,
-          variables: {
-            code: data.code,
-            email: data.email,
-          },
+          variables: data,
         },
       }),
-      // Postman-e "data: true" ashche tai transformResponse add kora holo
-      transformResponse: (response: any) => response?.data?.verifyEmail,
+      transformResponse: (response: any) => response?.data,
     }),
 
 resetPassword: build.mutation({
-  query: (data) => ({
+  query: (data: { newPass: string; email: string; otp: string }) => ({
+    url: "",
     method: "POST",
     body: {
       query: `
-        mutation resetPassword($input: ResetPasswordInput!) {
-          resetPassword(input: $input)
+        mutation resetPassword($newPass: String!, $email: String!, $otp: String!) {
+          resetPassword(newPass: $newPass, email: $email, otp: $otp)
         }
       `,
-      variables: {
-        input: {
-          email: data.email,
-          code: data.code,
-          password: data.password,
-        },
-      },
+      variables: data,
     },
   }),
+  transformResponse: (response: any) => {
+    if (response?.errors) throw response.errors[0];
+    return response?.data?.resetPassword;
+  },
 }),
+
+
 
 
 changePassword: build.mutation({
@@ -103,3 +101,5 @@ export const {
   useResetPasswordMutation,
   useChangePasswordMutation
 } = userAPI;
+
+

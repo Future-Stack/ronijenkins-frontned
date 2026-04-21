@@ -27,7 +27,7 @@ const ForgotPasswordPage: React.FC = () => {
       if (res?.data === true || res === true) {
         toast.success("OTP has been sent to your email!");
      
-        navigate('/otp-verification', { state: { email } });
+        navigate('/reset-password', { state: { email } });
       }
     } catch (err: any) {
       console.error("Forget Password Error:", err);

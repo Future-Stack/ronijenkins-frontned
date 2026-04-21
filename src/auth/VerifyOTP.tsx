@@ -1,80 +1,122 @@
-
-import React, { useRef, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import AuthLayout from './AuthLayout';
-
-import { toast } from 'react-toastify';
-import { useVerifyEmailMutation } from '../redux/features/auth/authAPi';
+import React, { useRef, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import AuthLayout from "./AuthLayout";
+import { toast } from "react-toastify";
+import { useVerifyEmailMutation } from "../redux/features/auth/authAPi";
 
 const OTPVerificationPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const email = (location.state as any)?.email || '';
-  
-  // API Hook
+
+  const email = (location.state as any)?.email;
+
   const [verifyEmail, { isLoading }] = useVerifyEmailMutation();
 
-  const [otp, setOtp] = useState(Array(6).fill(''));
+  const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
   const inputRefs = useRef<HTMLInputElement[]>([]);
+
+  // ❗ safety check
+  if (!email) {
+    toast.error("Email missing. Please try again.");
+    navigate("/forgot-password");
+  }
 
   const handleChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return;
 
     const newOtp = [...otp];
-    newOtp[index] = value.slice(-1); `11`
+    newOtp[index] = value.slice(-1); // ✅ FIXED
     setOtp(newOtp);
 
     if (value && index < 5) {
-      inputRefs.current[index + 1].focus();
+      inputRefs.current[index + 1]?.focus();
     }
   };
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
-      inputRefs.current[index - 1].focus();
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus();
     }
   };
+
+  // const handleVerify = async () => {
+  //   const enteredOtp = otp.join("");
+
+  //   if (enteredOtp.length !== 6) {
+  //     toast.error("Enter all 6 digits of OTP");
+  //     return;
+  //   }
+
+  //   try {
+  //     const res = await verifyEmail({
+  //       code: enteredOtp,
+  //       email: email,
+  //     }).unwrap();
+
+  //     // backend returns: true
+  //     if (res === true) {
+  //       toast.success("OTP Verified Successfully!");
+
+  //       navigate("/reset-password", {
+  //         state: { email, code: enteredOtp },
+  //       });
+  //     } else {
+  //       toast.error("Invalid OTP");
+  //     }
+  //   } catch (err: any) {
+  //     toast.error(
+  //       err?.data?.errors?.[0]?.message || "Invalid OTP. Please try again."
+  //     );
+  //     console.log(err)
+  //   }
+  // };
 
   const handleVerify = async () => {
-    const enteredOtp = otp.join('');
-    
-    if (enteredOtp.length !== 6) {
-      toast.error('Enter all 6 digits of OTP');
-      return;
-    }
+  const enteredOtp = otp.join("");
 
-    try {
-     
-      const res = await verifyEmail({ 
-        code: enteredOtp, 
-        email: email 
-      }).unwrap();
+  if (enteredOtp.length !== 6) {
+    toast.error("Enter all 6 digits of OTP");
+    return;
+  }
 
-      if (res.data === true || res) {
-        toast.success("OTP Verified Successfully!");
-        // Reset password page-e OTP code-tao pathiye din jate next step-e lagle pawa jay
-        navigate('/reset-password', { state: { email, code: enteredOtp } });
-      }
-    } catch (err: any) {
-      toast.error(err?.data?.errors?.[0]?.message || "Invalid OTP. Please try again.");
-    }
-  };
+  try {
+    const res = await verifyEmail({
+      code: enteredOtp,
+      email: email,
+      
+    }).unwrap();
+   navigate("/reset-password", {
+          state: { email, code: enteredOtp },
+        });
+    console.log("✅ RAW RES:", res); // ADD THIS
+    console.log("✅ TYPE:", typeof res); // ADD THIS
 
+  } catch (err: any) {
+    console.log("❌ FULL ERROR:", JSON.stringify(err, null, 2)); // ADD THIS
+    toast.error(
+      err?.data?.errors?.[0]?.message || "Invalid OTP. Please try again."
+    );
+  }
+};
   return (
     <AuthLayout>
       <div className="bg-white rounded-[12px] md:rounded-[3rem] border border-stone-100 shadow-sm p-2 md:p-8 space-y-6">
         <h2 className="text-titleColor text-2xl md:text-[30px] font-extrabold">
           OTP Verification
         </h2>
+
         <p className="text-subTitleColor text-sm font-medium">
-          Enter the 6-digit OTP sent to <span className="font-bold">{email}</span>.
+          Enter the 6-digit OTP sent to{" "}
+          <span className="font-bold">{email}</span>.
         </p>
 
         <div className="flex justify-between gap-2 md:gap-3 mt-4">
           {otp.map((digit, idx) => (
             <input
               key={idx}
-              ref={(el) => { if(el) inputRefs.current[idx] = el; }}
+              ref={(el) => {
+                if (el) inputRefs.current[idx] = el;
+              }}
               type="text"
               inputMode="numeric"
               maxLength={1}
@@ -89,7 +131,7 @@ const OTPVerificationPage: React.FC = () => {
         <button
           onClick={handleVerify}
           disabled={isLoading}
-          className="w-full py-5 rounded-2xl bg-[#845E84] text-white font-black uppercase tracking-widest cursor-pointer text-sm shadow-lg shadow-[#845E84]/20 hover:bg-[#6d4d6d] transition-all disabled:opacity-50"
+          className="w-full py-5 rounded-2xl bg-[#845E84] text-white font-black uppercase tracking-widest text-sm shadow-lg shadow-[#845E84]/20 hover:bg-[#6d4d6d] transition-all disabled:opacity-50"
         >
           {isLoading ? "Verifying..." : "Verify OTP"}
         </button>
