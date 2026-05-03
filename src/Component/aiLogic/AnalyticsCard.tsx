@@ -14,7 +14,7 @@ const AnalyticsCard: React.FC<AnalyticsCardProps> = ({
   title,
   subtitle,
   rightTop,
-  rightBottom,
+  // rightBottom,
   rightColor = 'text-[#00A63E]',
 }) => {
   return (
