@@ -118,7 +118,7 @@ dispatch(setCredentials({ user: null, token: accessToken, refreshToken }));
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-5 top-1/2 -translate-y-1/2"
+              className="absolute right-5 mt-2 top-1/2 -translate-y-1/2"
             >
               <EyeIcon />
             </button>
