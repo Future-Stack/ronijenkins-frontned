@@ -110,7 +110,7 @@ const baseQueryWithReauth = async (
 
     if (!refreshToken) {
       api.dispatch(logout());
-      window.location.href = "/login";
+      window.location.href = "/";
       return result;
     }
 
@@ -161,7 +161,7 @@ const baseQueryWithReauth = async (
 export const baseAPI = createApi({
   reducerPath: "baseAPI",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Auth", "Broadcast", "Overview", "Content", "AdminProfile", "Users", "HealthGoals","Customers", "Subscription", "Appointments", "Notifications","MedicalHistory","Symptoms","Payments","SystemOverview"],
+  tagTypes: ["Auth", "Broadcast", "Overview", "Content", "AdminProfile", "Users", "HealthGoals","Customers", "Subscription", "Appointments", "Notifications","MedicalHistory","Symptoms","Payments","SystemOverview", "Analytics"],
   endpoints: () => ({}),
 });
 

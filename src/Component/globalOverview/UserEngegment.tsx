@@ -33,11 +33,11 @@ const chartData = Array.from({ length: 7 }).map((_, i) => ({
 
   if (isLoading) {
     return (
-      <div className="h-[400px] flex items-center justify-center bg-white rounded-[40px]">
-        Loading Engagement...
+        <div className="flex justify-center items-center h-64">
+        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
       </div>
-    );
-  }
+    )
+  };
 
   return (
     <div className="w-full h-full p-8 bg-white rounded-[40px] shadow-sm border border-gray-100 min-h-[320px]">

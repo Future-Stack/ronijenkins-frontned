@@ -2,7 +2,7 @@ import { Users, Activity, MessageSquare, TrendingUp } from "lucide-react";
 import { useGetSubscriptionCardQuery } from "../../redux/features/admin/subscriptionCardApi";
 
 const OverviewCard = () => {
-  const { data: statsData, isLoading } = useGetSubscriptionCardQuery();
+  const { data: statsData,  } = useGetSubscriptionCardQuery();
 
   console.log("DATA 👉", statsData);
 
@@ -51,9 +51,7 @@ const OverviewCard = () => {
     },
   ];
 
-  if (isLoading) {
-    return <p className="text-center">Loading...</p>;
-  }
+
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">

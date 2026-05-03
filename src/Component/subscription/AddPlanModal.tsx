@@ -15,7 +15,7 @@ const ChevronDown = () => (
 );
 
 const AddPlanModal: React.FC<ModalProps> = ({ isOpen, onClose, editingPlan, onSave }) => {
-  // ✅ সব hooks আগে — if (!isOpen) return null এর আগে
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [plan, setPlan] = useState<"MONTHLY" | "YEARLY">("MONTHLY");
@@ -55,7 +55,7 @@ const AddPlanModal: React.FC<ModalProps> = ({ isOpen, onClose, editingPlan, onSa
     }
   }, [editingPlan]);
 
-  // ✅ early return hooks এর পরে
+
   if (!isOpen) return null;
 
   const handleSave = () => {

@@ -2,6 +2,10 @@ import { Trash2 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useGetPaymentsQuery } from "../../redux/features/admin/subsciptionApi";
 
+
+
+
+
 const SubscriberTable: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
@@ -74,7 +78,11 @@ const SubscriberTable: React.FC = () => {
   }, [isFilterOpen]);
 
   if (isLoading) {
-    return <div className="p-10 text-center font-bold">Loading...</div>;
+    return (
+        <div className="flex justify-center items-center h-64">
+        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    )
   }
 
   if (error) {

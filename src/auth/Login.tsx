@@ -141,6 +141,19 @@ dispatch(setCredentials({ user: null, token: accessToken, refreshToken }));
           >
             {isLoading ? "Signing in..." : "Sign In"}
           </button>
+
+             <div className="pt-4 text-center">
+             <div className="flex items-center gap-4">
+              <div className="h-px bg-stone-100 flex-1"></div>
+               <span className="text-[10px] font-bold text-stone-300 uppercase tracking-widest">
+                 Admin Access Only
+               </span>
+               <div className="h-px bg-stone-100 flex-1"></div>
+             </div>
+             <p className="text-[11px] font-medium text-stone-300 mt-2">
+               Protected by enterprise-grade security
+             </p>
+           </div>
         </form>
       </div>
     </AuthLayout>

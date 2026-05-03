@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AuthLayout from './AuthLayout';
 
 import { toast } from 'react-toastify';
-import { Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useForgetPasswordMutation } from '../redux/features/auth/authAPi';
 
 const ForgotPasswordPage: React.FC = () => {
@@ -17,7 +17,7 @@ const ForgotPasswordPage: React.FC = () => {
     e.preventDefault(); 
 
     if (!email.trim()) {
-      return toast.error("Please enter your email address");
+      return toast.error("Please enter your email address",{position:'top-right'});
     }
 
     try {
@@ -25,13 +25,13 @@ const ForgotPasswordPage: React.FC = () => {
       const res = await forgetPassword(email).unwrap();
 
       if (res?.data === true || res === true) {
-        toast.success("OTP has been sent to your email!");
+        toast.success("OTP has been sent to your email!",{position:'top-right'});
      
         navigate('/reset-password', { state: { email } });
       }
     } catch (err: any) {
       console.error("Forget Password Error:", err);
-      toast.error(err?.data?.errors?.[0]?.message || "Failed to send OTP. Please try again.");
+      toast.error(err?.data?.errors?.[0]?.message || "Failed to send OTP. Please try again.",{position:'top-right'});
     }
   };
 
@@ -73,7 +73,19 @@ const ForgotPasswordPage: React.FC = () => {
               "Send OTP"
             )}
           </button>
+          <div className='flex justify-center'>
+            <button 
+              onClick={() => navigate('/')}
+              className="text-xs flex items-center justify-center gap-2 font-black  text-[#4A3A3799] hover:text-[#845E84] transition-colors cursor-pointer"
+            >
+              <ArrowLeft/>
+              Back to login
+            </button>
+          </div>
         </form> 
+        <div>
+          
+        </div>
       </div>
     </AuthLayout>
   );

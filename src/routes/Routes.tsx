@@ -64,7 +64,7 @@ const routes = createBrowserRouter([
        { path: "profile", element: <AdminProfile/> },
        { path: "edit_profile", element: <EditProfile/> },
 
-      //  { path: "logout", element: <ProfilePage /> },
+   
            
         ],
       },

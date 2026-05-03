@@ -7,6 +7,21 @@ interface MetricCardProps {
   change?: string;
   isPositive?: boolean;
 }
+const MetricCardSkeleton = () => {
+  return (
+    <div className="bg-white p-3 md:p-6 rounded-[22px] border border-borderColor flex flex-col gap-4 animate-pulse">
+      {/* label */}
+      <div className="h-3 w-24 bg-gray-200 rounded"></div>
+
+      {/* value */}
+      <div className="h-8 w-32 bg-gray-300 rounded"></div>
+
+      {/* change */}
+      <div className="h-3 w-20 bg-gray-200 rounded"></div>
+    </div>
+  );
+};
+
 
 const MetricCard: React.FC<MetricCardProps> = ({
   label,
@@ -48,7 +63,17 @@ const MetricCard: React.FC<MetricCardProps> = ({
 const SubscriptionCard: React.FC = () => {
   const { data, isLoading, isError } = useGetSubscriptionCardQuery();
 
-  if (isLoading) return <p className="text-center">Loading...</p>;
+ if (isLoading) {
+  return (
+    <div className="mt-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        {[1, 2, 3, 4].map((_, i) => (
+          <MetricCardSkeleton key={i} />
+        ))}
+      </div>
+    </div>
+  );
+}
   if (isError) return <p className="text-center text-red-500">Error loading data</p>;
 
   const overview = data;

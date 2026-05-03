@@ -13,14 +13,6 @@ const DashboardLayout = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
 
-  // const toggleSidebar = (state: boolean) => setIsSidebarCollapsed(state);
-
-  // const handleLogoutClick = () => {
-  //   setShowLogoutModal(true);
-  //   setMobileMenuOpen(false);
-  // };
-
-
 
 
 
@@ -77,7 +69,7 @@ const DashboardLayout = () => {
             onConfirm={() => {
             
               setShowLogoutModal(false);
-              // navigate("/login");
+           
             }}
             onCancel={() => setShowLogoutModal(false)}
           />

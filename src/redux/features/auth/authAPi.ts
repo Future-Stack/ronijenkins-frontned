@@ -68,11 +68,7 @@ resetPassword: build.mutation({
       `,
       variables: data,
     },
-  }),
-  transformResponse: (response: any) => {
-    if (response?.errors) throw response.errors[0];
-    return response?.data?.resetPassword;
-  },
+  })
 }),
 
 

@@ -94,7 +94,7 @@ const Sidebar: React.FC = () => {
       navigate("/");
     } catch (error) {
       console.error("Logout error:", error);
-      dispatch(clearLogout()); // Force logout anyway
+      dispatch(clearLogout()); 
       navigate("/");
     }
   };

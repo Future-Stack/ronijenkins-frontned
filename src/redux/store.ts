@@ -14,7 +14,7 @@ import storage from "redux-persist/lib/storage";
 import authReducer from "./features/auth/authSlice";
 import { baseAPI } from "./api/baseApi";
 
-//  CREATE TRANSFORM: Fix null serialization
+
 const nullTransform = createTransform(
   // Transform state coming from redux before being persisted
   (inboundState: any) => {

@@ -33,7 +33,7 @@ const ManagePlan: React.FC = () => {
 
   const allPlans = rawResponse?.data || [];
 
-  // ✅ প্ল্যানগুলোকে নাম অনুযায়ী গ্রুপ করার লজিক
+
   const groupedPlans = allPlans.reduce((acc: any, current: any) => {
     const name = current.name;
     if (!acc[name]) {
@@ -60,37 +60,41 @@ const handleSavePlan = async (data: Omit<Plan, "id">) => {
     if (editingPlan) {
       // Edit backend
       await updatePlan({ id: editingPlan.id, ...data }).unwrap();
-      toast.success("Plan updated successfully!");
+      toast.success("Plan updated successfully!",{position:"top-right"});
     } else {
       // Create backend
       await createPlan(data).unwrap();
-      toast.success("Plan added successfully!");
+      toast.success("Plan added successfully!",{position:"top-right"});
     }
     setIsAddOpen(false);
   } catch (err) {
     console.error(err);
-    toast.error("Failed to save plan");
+    toast.error("Failed to save plan",{position:"top-right"});
   }
 };
 
 const processDelete = async () => {
   if (!confirmDeletePlan) return;
-  console.log("Attempting to delete plan:", confirmDeletePlan); // 🔹 দেখাবে কোন প্ল্যান delete হচ্ছে
+  console.log("Attempting to delete plan:", confirmDeletePlan); 
   try {
     const result = await removePlan(confirmDeletePlan.id).unwrap();
-    console.log("Delete API result:", result); // 🔹 দেখাবে API থেকে কি response এসেছে
+    console.log("Delete API result:", result);
     setPlans(prev => prev.filter(p => p.id !== confirmDeletePlan.id));
-    toast.success("Plan deleted successfully!");
+    toast.success("Plan deleted successfully!",{position:"top-right"});
     refetch(); 
   } catch (err) {
-    console.error("Delete Error:", err); // 🔹 কোনো error থাকলে console এ দেখাবে
-    toast.error("Failed to delete plan");
+    console.error("Delete Error:", err); 
+    toast.error("Failed to delete plan",{position:"top-right"});
   } finally {
     setConfirmDeletePlan(null);
   }
 };
 
-  if (isLoading) return <div className="p-20 text-center font-bold">Loading Plans...</div>;
+  if (isLoading) return (
+    <div className="flex justify-center items-center h-64">
+        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+  );
 
   return (
     <div className="min-h-screen bg-[#FBF9F6] p-4 md:p-8 font-sans">
@@ -129,10 +133,10 @@ const processDelete = async () => {
             {planList.map((group: any, idx: number) => {
               const displayPlan =
   billingCycle === "MONTHLY"
-    ? group.monthly || group.free   // monthly না থাকলে free
-    : group.yearly;                 // yearly হলে শুধু yearly
+    ? group.monthly || group.free  
+    : group.yearly;                 
 
-// ❌ yearly না থাকলে card show হবে না
+
 if (!displayPlan) return null;
 
 

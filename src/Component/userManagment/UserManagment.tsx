@@ -614,8 +614,13 @@ const UserManagement = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-borderColor/50">
+            
               {isLoading ? (
-                <tr><td colSpan={6} className="py-20 text-center font-bold text-subTitleColor">Loading Data...</td></tr>
+                <tr><td colSpan={6} className="py-20 text-center font-bold text-subTitleColor">
+                      <div className="flex justify-center items-center h-64">
+        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+                  </td></tr>
               ) : isError ? (
                 <tr><td colSpan={6} className="py-20 text-center text-red-500 font-bold">Failed to load customers. Please try again.</td></tr>
               ) : filteredUsers.length > 0 ? (
@@ -693,7 +698,7 @@ const UserManagement = () => {
         </div>
       </div>
 
-      {/* Pagination (Optional UI placeholder) */}
+      
       {/* Pagination Number Buttons */}
 <div className="mt-6 flex justify-center gap-2">
   {Array.from({ length: customerData?.meta?.totalPage || 1 }, (_, i) => (

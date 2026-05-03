@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useGetNotificationsQuery, useMarkAllNotificationsAsReadMutation } from "../redux/features/admin/notificationApi";
 
-
-
-
 type NotificationType =
   | "SUBSCRIPTION_REMINDER"
   | "GROUP_ASSIGNMENT"
@@ -24,8 +21,6 @@ interface ApiNotification {
   createdAt: string;
   updatedAt: string;
 }
-
-
 
 const formatTime = (dateStr: string): string => {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -51,8 +46,6 @@ const getIconType = (type: NotificationType): IconType => {
   };
   return map[type] ?? "flag";
 };
-
-// ─── Icons ────────────────────────────────────────────────────────────────────
 
 const NotificationIcon = ({ type }: { type: NotificationType }) => {
   const iconType = getIconType(type);
@@ -84,7 +77,6 @@ const NotificationIcon = ({ type }: { type: NotificationType }) => {
       color: "text-purple-500",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="#7C3AED" opacity="0.15" />
           <path d="M11.9961 2.99895V20.9927M8.49707 6.99756C8.49707 6.99756 8.99707 4.99826 11.9961 4.99826C14.9951 4.99826 15.4951 6.99756 15.4951 8.49721C15.4951 11.4962 8.49707 10.9962 8.49707 13.9951C8.49707 15.9944 9.99658 17.9937 11.9961 17.9937C13.9955 17.9937 15.4951 15.9944 15.4951 15.9944" stroke="#7C3AED" strokeWidth="1.9993" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       ),
@@ -109,8 +101,6 @@ const NotificationIcon = ({ type }: { type: NotificationType }) => {
   );
 };
 
-// ─── Skeleton ─────────────────────────────────────────────────────────────────
-
 const NotificationSkeleton = () => (
   <div className="bg-white border border-borderColor p-4 md:p-6 rounded-2xl md:rounded-4xl flex flex-col md:flex-row gap-4 md:items-center animate-pulse">
     <div className="w-12 h-12 rounded-2xl bg-gray-100 shrink-0" />
@@ -134,13 +124,15 @@ const NotificationPage: React.FC = () => {
   const notifications: ApiNotification[] = data?.notifications ?? [];
   const meta = data?.meta ?? { page: 1, limit: 10, total: 0, totalPage: 1 };
   const totalPages = meta.totalPage ?? 1;
-  const allRead = notifications.every((n) => n.read);
 
-  console.log(notifications)
+  // ✅ Derived from live cache — always in sync after refetch
+  const hasUnread = notifications.some((n) => !n.read);
 
   const handleMarkAllAsRead = async () => {
     try {
       await markAllAsRead().unwrap();
+      // ✅ Cache is invalidated by the mutation's invalidatesTags in notificationApi.ts
+      // The query will auto-refetch and all dots will disappear
     } catch (err) {
       console.error("Failed to mark all as read:", err);
     }
@@ -160,7 +152,7 @@ const NotificationPage: React.FC = () => {
         </div>
         <button
           onClick={handleMarkAllAsRead}
-          disabled={isMarking || allRead || isLoading}
+          disabled={isMarking || !hasUnread || isLoading}
           className="text-xs font-black uppercase tracking-widest text-buttonColor cursor-pointer transition-opacity pb-1 disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {isMarking ? "Marking..." : "Mark all as read"}
@@ -194,7 +186,8 @@ const NotificationPage: React.FC = () => {
                   <h3 className="font-black text-titleColor leading-5 md:leading-7 text-lg mb-1">
                     {notif.title}
                   </h3>
-                  {!notif.read && (
+                  {/* ✅ Dot only shows when notif.read is strictly false */}
+                  {notif.read === false && (
                     <span className="w-2 h-2 rounded-full bg-buttonColor shrink-0" />
                   )}
                 </div>
@@ -202,7 +195,6 @@ const NotificationPage: React.FC = () => {
                   {notif.body}
                 </p>
 
-                {/* Optional: render parsed `data` field */}
                 {notif.data && (() => {
                   try {
                     const parsed = JSON.parse(notif.data);

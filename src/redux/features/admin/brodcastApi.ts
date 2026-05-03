@@ -59,28 +59,27 @@ export const broadcastApi = baseAPI.injectEndpoints({
 
         formData.append("operations", JSON.stringify(operations));
 
-        // ২. Map: ফাইলটিকে ভ্যারিয়েবলের সাথে ম্যাপ করা (পোস্টম্যান অনুযায়ী)
+
         const map = {
           "0": ["variables.file"],
         };
         formData.append("map", JSON.stringify(map));
 
-        // ৩. File: আসল ফাইলটি "0" কী-তে অ্যাপেন্ড করা
         if (file) {
           formData.append("0", file);
         }
 
         return {
-          url: "", // আপনার গ্রাফকিউএল এন্ডপয়েন্ট (বক্স ফাঁকা থাকলে বেস ইউআরএল কাজ করবে)
+          url: "",
           method: "POST",
           body: formData,
-          // নোট: FormData পাঠালে ব্রাউজার নিজেই সঠিক Content-Type (multipart/form-data) সেট করে নেয়।
+       
         };
       },
       invalidatesTags: ["Broadcast"],
     }),
 
-    // Get All Broadcasts Query (যদি প্রয়োজন হয়)
+
     getBroadcasts: build.query({
       query: () => ({
         body: {
@@ -99,7 +98,9 @@ export const broadcastApi = baseAPI.injectEndpoints({
       }),
       providesTags: ["Broadcast"],
     }),
+
+
   }),
 });
 
-export const { useCreateBroadcastMutation, useGetBroadcastsQuery } = broadcastApi;
+export const { useCreateBroadcastMutation, useGetBroadcastsQuery,  } = broadcastApi;
