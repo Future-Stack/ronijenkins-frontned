@@ -87,8 +87,8 @@ transformResponse: (response: any) => {
     { type: "Content" as const, id: "LIST" },
     { type: "Content" as const, id: `LIST-PAGE-${arg?.page ?? 1}` },
   ],
-  keepUnusedDataFor: 0, 
-  forceRefetch: () => true, 
+  keepUnusedDataFor: 300, 
+  // forceRefetch: () => true, 
 }),
 
 

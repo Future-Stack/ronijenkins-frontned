@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { BrainCircuit } from 'lucide-react';
 
-// --- Types ---
 interface QueryItem {
   question_text: string;
   confidence_score: number;
@@ -17,10 +15,13 @@ interface RecentQueriesData {
   analysis_period: string;
 }
 
-// --- API ---
-const API_URL = 'https://navelle-ai-ay11.onrender.com/api/ai/analyze/chat-insights';
+interface Props {
+  data: RecentQueriesData | null;
+  loading: boolean;
+  error: string | null;
+  onRetry: () => void;
+}
 
-// --- Helpers ---
 function formatDate(iso: string): string {
   try {
     return new Date(iso).toLocaleString('en-US', {
@@ -34,38 +35,9 @@ function formatDate(iso: string): string {
   }
 }
 
-const RecentQueries: React.FC = () => {
-  const [data, setData] = useState<RecentQueriesData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchData = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await axios.post(API_URL, '', {
-        headers: { accept: 'application/json' },
-      });
-      setData(res.data.recent_queries);
-      console.log('Recent Queries Data:', res.data.recent_queries);
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.detail || err.message);
-      } else {
-        setError('Unexpected error occurred');
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
+const RecentQueries: React.FC<Props> = ({ data, loading, error, onRetry }) => {
   return (
     <div className="w-full h-full bg-white rounded-[40px] p-3 xl:p-8 shadow-sm border border-gray-50">
-      {/* Header */}
       <div className="mb-10">
         <h2 className="text-base md:text-lg font-extrabold text-titleColor mt-3 leading-6">
           Recent Queries Analysis
@@ -102,7 +74,7 @@ const RecentQueries: React.FC = () => {
         <div className="flex flex-col items-center justify-center py-10 gap-3">
           <p className="text-sm text-red-500 font-medium">{error}</p>
           <button
-            onClick={fetchData}
+            onClick={onRetry}
             className="text-xs font-bold text-white bg-red-400 hover:bg-red-500 px-4 py-2 rounded-xl transition-all"
           >
             Retry
@@ -121,7 +93,6 @@ const RecentQueries: React.FC = () => {
                   key={index}
                   className="group flex flex-col md:flex-row items-start md:items-center justify-between p-6 bg-[#FBF8F6] rounded-[28px] border border-orange-50/50 hover:shadow-md transition-all duration-300"
                 >
-                  {/* Left: Icon & Text */}
                   <div className="flex items-center gap-5">
                     <div className="w-12 h-12 shrink-0 bg-white rounded-2xl flex items-center justify-center text-[#846584] shadow-sm border border-gray-50 group-hover:scale-110 transition-transform">
                       <BrainCircuit size={22} />
@@ -136,7 +107,6 @@ const RecentQueries: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Right: Confidence */}
                   <div className="mt-4 md:mt-0 text-left md:text-right w-full md:w-auto border-t md:border-t-0 pt-4 md:pt-0 border-gray-100">
                     <div
                       className={`font-black text-xs leading-4 ${
@@ -154,7 +124,6 @@ const RecentQueries: React.FC = () => {
             })}
           </div>
 
-          {/* Footer meta */}
           <p className="text-[10px] font-bold text-[#4A3A3744] uppercase tracking-widest mt-6 text-right">
             {data.total_queries_analyzed} queries · avg {Math.round(data.avg_confidence * 100)}% confidence · {data.analysis_period} period
           </p>
@@ -165,8 +134,3 @@ const RecentQueries: React.FC = () => {
 };
 
 export default RecentQueries;
-
-
-
-
-
