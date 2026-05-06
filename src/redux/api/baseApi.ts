@@ -56,7 +56,7 @@ const baseQueryWithReauth = async (
     }
     if (!token || token === "undefined" || token === "null") token = null;
 
-    const baseUrl = import.meta.env.VITE_API_URL || "https://ronijenkinsserver-production.up.railway.app/graphql";
+    const baseUrl = import.meta.env.VITE_API_URL || "http://13.51.155.66:8989/graphql" ;
 
     try {
       const fetchHeaders: Record<string, string> = {};
