@@ -10,7 +10,7 @@ interface Insights {
   recent_queries: any;
 }
 
-// ✅ Component এর বাইরে রাখো — route change এ reset হবে না
+
 let cachedInsights: Insights | null = null;
 
 const AiLogic = () => {
@@ -78,6 +78,7 @@ const AiLogic = () => {
 };
 
 export default AiLogic;
+
 
 // import MostUsedQuestions from "../Component/aiLogic/MostUsedQuestion"
 // import RecentQueries from "./RecentQuries"

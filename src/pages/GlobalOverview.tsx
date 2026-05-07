@@ -76,7 +76,7 @@ const engagementData = [
       className="flex w-full sm:w-auto justify-center items-center gap-2 bg-buttonColor font-extrabold px-5 py-3 text-white rounded-2xl cursor-pointer"
     >
       <Plus />
-      Broadcast Update
+       Create Broadcast
     </button>
   </div>
 

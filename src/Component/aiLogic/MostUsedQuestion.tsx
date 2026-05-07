@@ -32,6 +32,11 @@ const MostUsedQuestions: React.FC<Props> = ({ data, loading, error, onRetry }) =
         <p className="text-subTitleColor text-sm font-medium leading-5">
           Top performing user inquiries across all segments
         </p>
+          {loading && (
+    <p className="text-xs font-bold text-[#846584] animate-pulse my-2">
+      ✦ Mennie AI is analyzing your data, please wait...
+    </p>
+  )}
       </div>
 
       {/* Loading State */}

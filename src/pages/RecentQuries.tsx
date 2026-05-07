@@ -45,22 +45,33 @@ const RecentQueries: React.FC<Props> = ({ data, loading, error, onRetry }) => {
         <p className="text-subTitleColor text-sm font-medium leading-5">
           Live stream of model interaction performance
         </p>
+
+                                    {loading && (
+    <p className="text-xs font-bold text-[#846584] animate-pulse mt-2">
+      ✦ Mennie AI is analyzing your data, please wait...
+    </p>
+  )}
       </div>
+
 
       {/* Loading State */}
       {loading && (
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
+            
             <div
               key={i}
               className="flex items-center gap-5 p-6 bg-[#FBF8F6] rounded-[28px] animate-pulse"
             >
+  
+     
               <div className="w-12 h-12 rounded-2xl bg-gray-200 shrink-0" />
+              
               <div className="flex-1 space-y-2">
                 <div className="h-4 bg-gray-200 rounded w-2/3" />
                 <div className="h-3 bg-gray-100 rounded w-1/3" />
               </div>
-              <div className="space-y-1 text-right">
+         <div className="space-y-1 text-right">
                 <div className="h-4 bg-gray-200 rounded w-20" />
                 <div className="h-3 bg-gray-100 rounded w-16" />
               </div>
