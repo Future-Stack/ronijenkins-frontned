@@ -56,7 +56,7 @@ const baseQueryWithReauth = async (
     }
     if (!token || token === "undefined" || token === "null") token = null;
 
-    const baseUrl = import.meta.env.VITE_API_URL || "https://ronijenkinsserver-production.up.railway.app/graphql";
+    const baseUrl = import.meta.env.VITE_API_URL || "http://13.51.155.66:8989/graphql" ;
 
     try {
       const fetchHeaders: Record<string, string> = {};
@@ -161,7 +161,8 @@ const baseQueryWithReauth = async (
 export const baseAPI = createApi({
   reducerPath: "baseAPI",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Auth", "Broadcast", "Overview", "Content", "AdminProfile", "Users", "HealthGoals","Customers", "Subscription", "Appointments", "Notifications","MedicalHistory","Symptoms","Payments","SystemOverview", "Analytics"],
+    keepUnusedDataFor: 300, 
+  tagTypes: ["Auth", "Broadcast", "Overview", "Content", "AdminProfile", "Users", "HealthGoals","Customers", "Subscription", "Appointments", "Notifications","MedicalHistory","Symptoms","Payments","SystemOverview", "Analytics","PlatformSettings"],
   endpoints: () => ({}),
 });
 

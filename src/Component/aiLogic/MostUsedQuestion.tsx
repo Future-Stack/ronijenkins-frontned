@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { MessageSquare } from 'lucide-react';
 
-// --- Types ---
 interface Question {
   question_text: string;
   ask_count: number;
@@ -17,38 +15,14 @@ interface MostUsedData {
   timestamp: string;
 }
 
-// --- API ---
-const API_URL = 'https://navelle-ai-ay11.onrender.com/api/ai/analyze/chat-insights';
+interface Props {
+  data: MostUsedData | null;
+  loading: boolean;
+  error: string | null;
+  onRetry: () => void;
+}
 
-const MostUsedQuestions: React.FC = () => {
-  const [data, setData] = useState<MostUsedData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchData = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await axios.post(API_URL, '', {
-        headers: { accept: 'application/json' },
-      });
-      setData(res.data.most_used);
-      console.log('Most Used Questions Data:', res.data.most_used);
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.detail || err.message);
-      } else {
-        setError('Unexpected error occurred');
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
+const MostUsedQuestions: React.FC<Props> = ({ data, loading, error, onRetry }) => {
   return (
     <div className="w-full h-full bg-white rounded-[40px] p-3 xl:p-8 shadow-sm border border-orange-50/50">
       <div className="mb-8">
@@ -58,6 +32,11 @@ const MostUsedQuestions: React.FC = () => {
         <p className="text-subTitleColor text-sm font-medium leading-5">
           Top performing user inquiries across all segments
         </p>
+          {loading && (
+    <p className="text-xs font-bold text-[#846584] animate-pulse my-2">
+      ✦ Mennie AI is analyzing your data, please wait...
+    </p>
+  )}
       </div>
 
       {/* Loading State */}
@@ -83,7 +62,7 @@ const MostUsedQuestions: React.FC = () => {
         <div className="flex flex-col items-center justify-center py-10 gap-3">
           <p className="text-sm text-red-500 font-medium">{error}</p>
           <button
-            onClick={fetchData}
+            onClick={onRetry}
             className="text-xs font-bold text-white bg-red-400 hover:bg-red-500 px-4 py-2 rounded-xl transition-all"
           >
             Retry
@@ -127,7 +106,6 @@ const MostUsedQuestions: React.FC = () => {
             })}
           </div>
 
-          {/* Footer meta */}
           <p className="text-[10px] font-bold text-[#4A3A3744] uppercase tracking-widest mt-6 text-right">
             {data.total_unique_questions} unique questions · {data.analysis_period} period
           </p>
@@ -138,7 +116,3 @@ const MostUsedQuestions: React.FC = () => {
 };
 
 export default MostUsedQuestions;
-
-
-
-
