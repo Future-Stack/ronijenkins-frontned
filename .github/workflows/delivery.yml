@@ -45,7 +45,7 @@ jobs:
 
     steps:
       - name: Deploy to VPS
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/ssh-action@v1
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         with:
