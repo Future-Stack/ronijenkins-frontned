@@ -19,6 +19,8 @@ import { persistor, store } from "./redux/store.ts";
 import { ApolloProvider } from "@apollo/client/react";
 import { client } from "./lib/apolloClient.ts";
 
+// testing deployment
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
