@@ -6,7 +6,7 @@ import { setCredentials, logout } from "../features/auth/authSlice";
 const baseQuery = fetchBaseQuery({
   baseUrl:
     import.meta.env.VITE_API_URL ||
-    "http://13.51.155.66:8989/graphql",
+    "https://api.navelle.app/graphql",
 
   prepareHeaders: (headers, { getState, endpoint }) => {
     const state = getState() as RootState;
