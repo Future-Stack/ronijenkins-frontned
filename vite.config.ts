@@ -38,7 +38,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/graphql': {
-        target: 'https://ronijenkinsserver-production.up.railway.app',
+        target: 'https://api.navelle.app',
         changeOrigin: true,
         secure: false,
       }
