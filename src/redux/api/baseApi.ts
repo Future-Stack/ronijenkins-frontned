@@ -56,7 +56,7 @@ const baseQueryWithReauth = async (
     }
     if (!token || token === "undefined" || token === "null") token = null;
 
-    const baseUrl = import.meta.env.VITE_API_URL || "http://13.51.155.66:8989/graphql" ;
+    const baseUrl = import.meta.env.VITE_API_URL || "https://api.navelle.app/graphql" ;
 
     try {
       const fetchHeaders: Record<string, string> = {};
@@ -69,7 +69,7 @@ const baseQueryWithReauth = async (
       });
 
       const jsonResponse = await response.json();
-      // ✅ RTK Query standard format
+   
       result = { data: jsonResponse }; 
       
     } catch (error: any) {
@@ -88,7 +88,7 @@ const baseQueryWithReauth = async (
     result = await baseQuery(modifiedArgs, api, extraOptions);
   }
 
-  // ── Reauth Logic ────────────────────────────────────────────────────────
+
   const errors = (result?.data as any)?.errors || (result as any)?.errors;
   
   const isUnauthorized =

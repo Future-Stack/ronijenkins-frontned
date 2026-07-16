@@ -37,6 +37,7 @@ export default defineConfig({
 
   server: {
     port: 3000,
+    allowedHosts: ["navelle.app"],
     proxy: {
       '/graphql': {
         target: 'https://api.navelle.app',
