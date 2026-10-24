@@ -24,9 +24,9 @@ dist-ssr
 *.env
 *.bat
 config.bat
-temp_auto_push.bat
-temp_interactive_push.bat
-branch_structure.json
 nul
 
 .gitignore
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
